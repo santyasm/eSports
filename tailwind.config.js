@@ -1,10 +1,11 @@
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./public/**/*.html", "./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        fundo: "url('../public/background-galaxy.png')",
+      },
+    },
   },
   plugins: [],
-  purge: ['./src/**/*.{js,jsx,ts,tsx}'],
-}
+};

@@ -1,11 +1,10 @@
-import './App.css';
+import "./App.css";
+import imgLogo from "./assets/Logo.svg";
 
 function App() {
-  return (
-        <h1 className='text-5xl text-red-500'>
-          App
-        </h1>
-  );
+  return <div className="max-w-[1344px] mx-auto flex flex-col items-center my-20">
+    <img src={imgLogo} alt=""/>
+  </div>;
 }
 
 export default App;
