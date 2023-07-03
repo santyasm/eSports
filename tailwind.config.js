@@ -1,6 +1,9 @@
 module.exports = {
   content: ["./public/**/*.html", "./src/**/*.{js,jsx}"],
   theme: {
+    fontFamily: {
+      'sans': ['Inter', 'sans-serif']
+    },
     extend: {
       backgroundImage: {
         fundo: "url('../public/background-galaxy.png')",
