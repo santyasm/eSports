@@ -9,9 +9,22 @@ const prisma = new PrismaClient({
 app.get('/games/:gameId/ads', async (req, res) => {
 	const { gameId } = req.params;
 	const ads = await prisma.ad.findMany({
+        select: {
+            id: true, 
+            name: true,
+            weekDays: true,
+            useVoiceChannel: true,
+            yearsPlaying: true,
+            discord: true,
+            hourStart: true,
+            hourEnd: true,
+        },
 		where: {
 			gameId,
 		},
+        orderBy: {
+            createdAt: 'desc'
+        }
 	});
 
 	return res.send(ads);
