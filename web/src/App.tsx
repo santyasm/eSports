@@ -1,4 +1,3 @@
-import "./App.css";
 import imgLogo from "./assets/Logo.svg";
 import { MagnifyingGlassPlus } from "@phosphor-icons/react";
 
