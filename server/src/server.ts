@@ -2,6 +2,9 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const app = express();
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 const prisma = new PrismaClient({
 	log: ['query'],
 });
@@ -57,12 +60,37 @@ app.get('/ads/:id/discord', async (req, res) => {
 	});
 
 	return res.json({
-		discord: ad.discord
-	})
+		discord: ad.discord,
+	});
 });
 
-app.post('/ads', (req, res) => {
-	return res.status(201).json([]);
+app.post('/games/:id/ads', async (req, res) => {
+	const gameId = req.params.id;
+	const {
+		name,
+		yearsPlaying,
+		discord,
+		weekDays,
+		hourStart,
+		hourEnd,
+		useVoiceChannel,
+	} = req.body;
+
+	const body = req.body;
+
+	const ad = await prisma.ad.create({
+		data: {
+			gameId,
+			name,
+			yearsPlaying,
+			discord,
+			weekDays,
+			hourStart,
+			hourEnd,
+			useVoiceChannel,
+		},
+	});
+	return res.status(201).json(ad);
 });
 
 app.listen(4000, () => console.log('App rodando em localhost:4000'));
