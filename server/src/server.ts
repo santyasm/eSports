@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { convertHourStringToMinutes } from './utils/convert-hour-string-to-minutes';
+import { convertMinutesToHourString } from './utils/convert-minutes-to-hour-string';
 
 const app = express();
 // app.use(express.urlencoded({ extended: true }));
@@ -30,7 +31,15 @@ app.get('/games/:gameId/ads', async (req, res) => {
 		},
 	});
 
-	return res.json(ads);
+	return res.json(
+		ads.map((ad) => {
+			return {
+				...ad,
+				hourStart: convertMinutesToHourString(ad.hourStart),
+				hourEnd: convertMinutesToHourString(ad.hourEnd),
+			};
+		})
+	);
 });
 
 app.get('/games', async (req, res) => {
@@ -78,7 +87,7 @@ app.post('/games/:id/ads', async (req, res) => {
 			weekDays: body.weekDays,
 			useVoiceChannel: body.useVoiceChannel,
 			hourStart: convertHourStringToMinutes(body.hourStart),
-			hourEnd: convertHourStringToMinutes(body.hourEnd)		
+			hourEnd: convertHourStringToMinutes(body.hourEnd),
 		},
 	});
 	return res.status(201).json(ad);
