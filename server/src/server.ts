@@ -9,25 +9,24 @@ const prisma = new PrismaClient({
 app.get('/games/:gameId/ads', async (req, res) => {
 	const { gameId } = req.params;
 	const ads = await prisma.ad.findMany({
-        select: {
-            id: true, 
-            name: true,
-            weekDays: true,
-            useVoiceChannel: true,
-            yearsPlaying: true,
-            discord: true,
-            hourStart: true,
-            hourEnd: true,
-        },
+		select: {
+			id: true,
+			name: true,
+			weekDays: true,
+			useVoiceChannel: true,
+			yearsPlaying: true,
+			hourStart: true,
+			hourEnd: true,
+		},
 		where: {
 			gameId,
 		},
-        orderBy: {
-            createdAt: 'desc'
-        }
+		orderBy: {
+			createdAt: 'desc',
+		},
 	});
 
-	return res.send(ads);
+	return res.json(ads);
 });
 
 app.get('/games', async (req, res) => {
@@ -44,6 +43,22 @@ app.get('/games', async (req, res) => {
 
 		return res.json(games);
 	} catch (error) {}
+});
+
+app.get('/ads/:id/discord', async (req, res) => {
+	const adId = req.params.id;
+	const ad = await prisma.ad.findUniqueOrThrow({
+		select: {
+			discord: true,
+		},
+		where: {
+			id: adId,
+		},
+	});
+
+	return res.json({
+		discord: ad.discord
+	})
 });
 
 app.post('/ads', (req, res) => {
