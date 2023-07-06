@@ -1,9 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Input } from "./Form/Input";
-import { CaretDown, Check, GameController } from "@phosphor-icons/react";
+import { Check, GameController } from "@phosphor-icons/react";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import axios from "axios";
 
 interface Game {
     id: string;
@@ -17,17 +18,40 @@ interface Game {
 export function CreateAdModal() {
     const [games, setGames] = useState<Game[]>([]);
     const [weekDays, setWeekDays] = useState<string[]>([]);
-
-    console.log(weekDays)
+    const [useVoiceChannel, setUseVoiceChannel] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:4000/games")
-            .then((response) => response.json())
-            .then((data) => {
-                setGames(data);
+        axios("http://localhost:4000/games")
+            .then(res => {
+                setGames(res.data);
             });
     }, []);
 
+    async function handleCreateAd(e: FormEvent){
+        e.preventDefault();
+        
+        
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const data = Object.fromEntries(formData);
+
+        console.log(data.hourStart)
+        try {
+            await axios.post(`http://localhost:4000/games/${data.game}/ads`, {
+                "name": data.name,
+                "yearsPlaying": Number(data.yearsPlaying) ,
+                "discord": data.discord,
+                "weekDays": weekDays.map(Number),
+                "hourStart": data.hourStart,
+                "hourEnd": data.hourEnd,
+                "useVoiceChannel": useVoiceChannel
+            })
+            
+            alert('Anúncio criado com sucesso!')
+        } catch (error) {
+            console.log('Erro ao criar anúncio: ', error)
+        }
+    }
 
     return (
         <Dialog.Portal>
@@ -37,13 +61,14 @@ export function CreateAdModal() {
                         Publique um anúncio
                     </Dialog.Title>
 
-                    <form className="mt-8 flex flex-col gap-4">
+                    <form className="mt-8 flex flex-col gap-4" onSubmit={handleCreateAd}>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="game" className="game-semibold">
                                 Qual o game?
                             </label>
 
-                            <select id=""
+                            <select id="game"
+                                name="game"
                                 className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none"
                                 defaultValue={""}
                                 >
@@ -66,7 +91,7 @@ export function CreateAdModal() {
 
                         <div className="flex flex-col gap-2">
                             <label htmlFor="name">Seu nome (ou nickname)</label>
-                            <Input id="name" placeholder="Como te chamam dentro do game?" />
+                            <Input id="name" placeholder="Como te chamam dentro do game?" name="name"/>
                         </div>
 
                         <div className="grid grid-cols-2 gap-6">
@@ -76,11 +101,12 @@ export function CreateAdModal() {
                                     id="yearsPlaying"
                                     type="number"
                                     placeholder="Tudo bem ser ZERO"
+                                    name="yearsPlaying"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="discord">Qual ser Discord?</label>
-                                <Input id="discord" placeholder="Usuario#0000" />
+                                <Input id="discord" placeholder="Usuario#0000" name="discord"/>
                             </div>
                         </div>
 
@@ -150,20 +176,29 @@ export function CreateAdModal() {
                                 <label htmlFor="hourStart">Qual horário do dia?</label>
 
                                 <div className="grid grid-cols-2 gap-2">
-                                    <Input type="time" id="hourStart" placeholder="De" />
-                                    <Input type="time" id="hourEnd" placeholder="Até" />
+                                    <Input type="time" id="hourStart" placeholder="De" name="hourStart"/>
+                                    <Input type="time" id="hourEnd" placeholder="Até" name="hourEnd"/>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-2 flex items-center gap-2 text-sm">
-                            <Checkbox.Root className="w-6 h-6 p-1 rounded bg-zinc-900">
+                        <label className="mt-2 flex items-center gap-2 text-sm">
+                            <Checkbox.Root 
+                            checked={useVoiceChannel}
+                            onCheckedChange={(checked) => {
+                                if(checked){
+                                    setUseVoiceChannel(true)
+                                } else{
+                                    setUseVoiceChannel(false)
+                                }
+                            }}
+                                className="w-6 h-6 p-1 rounded bg-zinc-900">
                                 <Checkbox.Indicator>
                                     <Check className="w-4 h-4 text-emerald-400" />
                                 </Checkbox.Indicator>
                             </Checkbox.Root>
                             Costumo me conectar ao chat de voz
-                        </div>
+                        </label>
 
                         <footer className="mt-4 flex justify-end gap-4">
                             <Dialog.Close

@@ -4,6 +4,7 @@ import { GameBanner } from "./components/GameBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
 import imgLogo from "./assets/Logo.svg";
 import { CreateAdModal } from "./components/CreateAdModal";
+import axios from "axios";
 
 interface Game {
   id: string;
@@ -18,12 +19,11 @@ function App() {
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/games")
-      .then((response) => response.json())
-      .then((data) => {
-        setGames(data);
-      });
-  }, []);
+    axios("http://localhost:4000/games")
+        .then(res => {
+            setGames(res.data);
+        });
+}, []);
 
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center my-20">
