@@ -3,6 +3,7 @@ import { Input } from "./Form/Input";
 import { CaretDown, Check, GameController } from "@phosphor-icons/react";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { useEffect, useState } from "react";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
 
 interface Game {
     id: string;
@@ -15,6 +16,9 @@ interface Game {
 
 export function CreateAdModal() {
     const [games, setGames] = useState<Game[]>([]);
+    const [weekDays, setWeekDays] = useState<string[]>([]);
+
+    console.log(weekDays)
 
     useEffect(() => {
         fetch("http://localhost:4000/games")
@@ -40,10 +44,11 @@ export function CreateAdModal() {
                             </label>
 
                             <select id=""
-                                className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none">
-                                <option value="" disabled selected>
+                                className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none"
+                                defaultValue={""}
+                                >
+                                <option value="" disabled>
                                     Selecione o game que deseja jogar
-                                    <CaretDown />
                                 </option>
 
                                 {games.map(game => {
@@ -83,44 +88,62 @@ export function CreateAdModal() {
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="weekDays">Quando costuma jogar?</label>
 
-                                <div className="grid grid-cols-4 gap-2">
-                                    <button
-                                        className="w-8 h-8 rounded bg-zinc-900"
-                                        title="Domingo"
+                                    <ToggleGroup.Root 
+                                    type="multiple" 
+                                    className="grid grid-cols-4 gap-2"
+                                    value={weekDays}
+                                    onValueChange={setWeekDays}
+                                    >
+                                    <ToggleGroup.Item 
+                                        value="0"
+                                        className={`w-8 h-8 rounded ${weekDays.includes('0') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        title="Domingo"                                        
                                     >
                                         D
-                                    </button>
-                                    <button
-                                        className="w-8 h-8 rounded bg-zinc-900"
+                                    </ToggleGroup.Item>
+
+                                    <ToggleGroup.Item 
+                                    value="1"
+                                        className={`w-8 h-8 rounded ${weekDays.includes('1') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                         title="Segunda"
                                     >
                                         S
-                                    </button>
-                                    <button className="w-8 h-8 rounded bg-zinc-900" title="Terça">
+                                    </ToggleGroup.Item>
+                                    <ToggleGroup.Item  
+                                    value="2"
+                                    className={`w-8 h-8 rounded ${weekDays.includes('2') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                     title="Terça">
                                         T
-                                    </button>
-                                    <button
-                                        className="w-8 h-8 rounded bg-zinc-900"
+                                    </ToggleGroup.Item>
+                                    <ToggleGroup.Item 
+                                    value="3"
+                                    className={`w-8 h-8 rounded ${weekDays.includes('3') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                         title="Quarta"
                                     >
                                         Q
-                                    </button>
-                                    <button
-                                        className="w-8 h-8 rounded bg-zinc-900"
-                                        title="Quinta"
+                                    </ToggleGroup.Item>
+                                    <ToggleGroup.Item 
+                                    value="4"
+                                    className={`w-8 h-8 rounded ${weekDays.includes('4') ? 'bg-violet-500' : 'bg-zinc-900'}`}                                      
+                                    title="Quinta"
                                     >
                                         Q
-                                    </button>
-                                    <button className="w-8 h-8 rounded bg-zinc-900" title="Sexta">
+                                    </ToggleGroup.Item>
+                                    <ToggleGroup.Item 
+                                    value="5" 
+                                    className={`w-8 h-8 rounded ${weekDays.includes('5') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                    title="Sexta"
+                                    >
                                         S
-                                    </button>
-                                    <button
-                                        className="w-8 h-8 rounded bg-zinc-900"
+                                    </ToggleGroup.Item>
+                                    <ToggleGroup.Item 
+                                    value="6"
+                                    className={`w-8 h-8 rounded ${weekDays.includes('6') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                         title="Sábado"
                                     >
                                         S
-                                    </button>
-                                </div>
+                                    </ToggleGroup.Item>
+                                    </ToggleGroup.Root>
                             </div>
 
                             <div className="flex flex-col gap-2 flex-1">
