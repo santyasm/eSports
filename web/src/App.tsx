@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { GameBanner } from "./components/GameBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
+import { useKeenSlider } from "keen-slider/react"
 import imgLogo from "./assets/Logo.svg";
 import { CreateAdModal } from "./components/CreateAdModal";
 import axios from "axios";
+import "keen-slider/keen-slider.min.css"
+
 
 interface Game {
   id: string;
@@ -16,6 +19,7 @@ interface Game {
 }
 
 function App() {
+
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
@@ -37,7 +41,8 @@ function App() {
         está aqui.
       </h1>
 
-      <div className="grid grid-cols-6 gap-6 mt-16">
+<div className="max-w-[80vw]">
+      <div className="flex gap-6 mt-16 overflow-x-auto scroll-smooth">
         {games.map((game) => {
           return (
             <GameBanner
@@ -49,7 +54,7 @@ function App() {
           );
         })}
       </div>
-
+      </div>
       <Dialog.Root>
         <CreateAdBanner />
         <CreateAdModal />

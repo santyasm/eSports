@@ -5,6 +5,8 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { FormEvent, useEffect, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import axios from "axios";
+import "keen-slider/keen-slider.min.css"
+
 
 interface Game {
     id: string;
@@ -30,8 +32,6 @@ export function CreateAdModal() {
     async function handleCreateAd(e: FormEvent){
         e.preventDefault();
         
-        
-
         const formData = new FormData(e.target as HTMLFormElement);
         const data = Object.fromEntries(formData);
 
