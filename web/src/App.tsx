@@ -41,8 +41,8 @@ function App() {
         está aqui.
       </h1>
 
-<div className="max-w-[80vw]">
-      <div className="flex gap-6 mt-16 overflow-x-auto scroll-smooth">
+<div className="max-w-[80vw] max-h-[100vh] ">
+      <div className="flex gap-6 mt-16 overflow-x-auto scrollbar-hide">
         {games.map((game) => {
           return (
             <GameBanner
