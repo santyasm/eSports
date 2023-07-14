@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StatusBar, StatusBarStyle } from 'expo-status-bar';
 import { Background } from './src/components/Background';
 import {
   useFonts,
@@ -9,8 +8,9 @@ import {
   Inter_900Black
 } from "@expo-google-fonts/inter";
 
-import { Home } from './src/screens/Home';
+import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
+import { Home } from './src/screens/Home';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -18,12 +18,14 @@ export default function App() {
     Inter_600SemiBold,
     Inter_700Bold,
     Inter_900Black
-});
+  });
 
   return (
     <Background>
-      <StatusBar />
-      {fontsLoaded ? <Home /> : <Loading />}
+      <StatusBar
+        style='light'
+      />
+      {fontsLoaded ? <Routes /> : <Loading />}
     </Background>
   );
 }
