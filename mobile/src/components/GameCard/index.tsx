@@ -1,4 +1,4 @@
-import { TouchableOpacity, TouchableOpacityProps, ImageBackground, ImageSourcePropType, Text } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, ImageBackground, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { styles } from './styles';
@@ -13,7 +13,7 @@ export interface GameCardProps {
   bannerUrl: string
 }
 
-interface Props {
+interface Props extends TouchableOpacityProps {
   data: GameCardProps
 }
 
