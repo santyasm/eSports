@@ -43,7 +43,7 @@ export function Game() {
           </TouchableOpacity>
 
           <Image
-            source={logoImg}
+            source={logoImg}  
             style={styles.logo}
           />
 
@@ -66,6 +66,7 @@ export function Game() {
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <DuoCard
+              onConnect={() => console.log('Modal')}
               data={item}
             />
           )}
