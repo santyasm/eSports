@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FlatList, Image, Text } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { FlatList, Image, Text } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Entypo } from "@expo/vector-icons"
+import { Entypo } from "@expo/vector-icons";
 
-import logoImg from '../../../assets/logo.png'
+import logoImg from '../../../assets/logo.png';
 
 import { Background } from '../../components/Background';
 import { THEME } from '../../theme';
