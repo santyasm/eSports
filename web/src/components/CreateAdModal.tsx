@@ -47,6 +47,7 @@ export function CreateAdModal() {
                 "useVoiceChannel": useVoiceChannel
             })
             
+            window.location.href = '/';
             alert('Anúncio criado com sucesso!')
         } catch (error) {
             console.log('Erro ao criar anúncio: ', error)
