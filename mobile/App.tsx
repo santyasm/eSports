@@ -1,4 +1,4 @@
-import { StatusBar, StatusBarStyle } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { Background } from './src/components/Background';
 import {
   useFonts,
