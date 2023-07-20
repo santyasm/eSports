@@ -2,6 +2,7 @@ export const THEME = {
     COLORS: {
         BACKGROUND_900: '#121214',
         BACKGROUND_800: '#18181B',
+        BACKGROUND_700: '#2A2634',
 
         TEXT: '#FFFFFF',
 
