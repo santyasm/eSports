@@ -13,6 +13,7 @@ export declare global {
         title: string;
         bannerUrl: string;
       };
+      createad: undefined;
     }
   }
 }

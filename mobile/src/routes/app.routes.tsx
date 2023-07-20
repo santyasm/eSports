@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from '../screens/Home';
 import { Game } from '../screens/Game';
+import { CreateAd } from '../screens/CreateAd';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -15,6 +16,11 @@ export function AppRoutes() {
             <Screen
                 name='game'
                 component={Game}
+            />
+
+            <Screen 
+                name='createad'
+                component={CreateAd}
             />
         </Navigator>
     );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Image, FlatList } from 'react-native';
+import { Image, FlatList, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
 import logoImg from "../../../assets/logo.png"
@@ -9,6 +9,8 @@ import { Heading } from '../../components/Heading';
 import { GameCard, GameCardProps } from '../../components/GameCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Background } from '../../components/Background';
+import { MagnifyingGlassPlus } from 'phosphor-react-native';
+import { THEME } from '../../theme';
 
 export function Home() {
   const [games, setGames] = useState<GameCardProps[]>([]);
@@ -18,8 +20,12 @@ export function Home() {
     navigation.navigate('game', {id, title, bannerUrl});
   }
 
+  function handleOpenCreatAd() {
+    navigation.navigate('createad');
+  }
+
   useEffect(() => {
-    fetch('http://192.168.0.102:4000/games')
+    fetch('http://10.0.0.22:4000/games')
       .then(response => response.json())
       .then(data => setGames(data))
   }, []);
@@ -47,6 +53,14 @@ export function Home() {
           horizontal
           contentContainerStyle={styles.contentList}
         />
+
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={handleOpenCreatAd}
+        >
+          <MagnifyingGlassPlus size={20} color={THEME.COLORS.TEXT} />
+          <Text style={styles.buttonTitle}>Publicar anúncio</Text>
+        </TouchableOpacity>
 
       </SafeAreaView>
     </Background>
