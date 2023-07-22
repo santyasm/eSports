@@ -26,14 +26,22 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.REGULAR,
     fontSize: THEME.FONT_SIZE.MD,
   },
+  label: {
+    color: THEME.COLORS.TEXT,
+    fontFamily: THEME.FONT_FAMILY.REGULAR,
+  },
   days: {
     display: "flex",
     flexDirection: "row",
   },
   picker: {
     borderRadius: 4,
-    width: '90%',
+    width: "90%",
     height: 40,
-    backgroundColor: THEME.COLORS.BACKGROUND_800
-  }
+    backgroundColor: THEME.COLORS.BACKGROUND_800,
+  },
+  boxSelect: {
+    borderColor: THEME.COLORS.BACKGROUND_800,
+    backgroundColor: THEME.COLORS.BACKGROUND_800,
+  },
 });

@@ -3,7 +3,10 @@ import { THEME } from '../../../theme';
 
 export const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 6,
+    paddingHorizontal: 20,
     backgroundColor: THEME.COLORS.PRIMARY,
     height: 40,
     borderRadius: 6,

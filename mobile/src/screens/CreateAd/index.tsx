@@ -10,11 +10,12 @@ import { Checkbox } from '../../components/Form/Checkbox';
 import { GameCardProps } from '../../components/GameCard';
 import { THEME } from '../../theme';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { GameController } from 'phosphor-react-native';
 
 export function CreateAd() {
     const [isEnabled, setIsEnabled] = useState(false);
     const [games, setGames] = useState<GameCardProps[]>([]);
-    const [game, setGame] = useState<GameCardProps[]>([]);
+    const [gameId, setGameId] = useState('');
 
 
     function toggleSwitch() {
@@ -46,11 +47,23 @@ export function CreateAd() {
                             subtitle='É rápido e fácil!'
                         />
 
-                        <SelectList
-                            setSelected={(item) => setGame(item)}
-                            data={data}
-                            placeholder='Selecione o game'
-                        />
+                        
+                            <SelectList
+                                boxStyles={styles.boxSelect}
+                                inputStyles={styles.label}
+                                dropdownStyles={{ borderColor: THEME.COLORS.BACKGROUND_800 }}
+                                dropdownTextStyles={styles.label}
+
+                                setSelected={(item: any) => setGameId(item)}
+                                
+                                data={data}
+                                placeholder='Selecione o game'
+                                save='key'
+                            />
+                       
+                        <Text style={styles.text}>
+                            Game: {gameId}
+                        </Text>
 
 
                         <Input placeholder='Seu nome (ou nickname)' />
@@ -112,7 +125,8 @@ export function CreateAd() {
                             value={isEnabled}
                         />
 
-                        <Button>
+                        <Button >
+                            <GameController size={24} color={THEME.COLORS.TEXT} />
                             <Text style={styles.text}>Encontrar duo</Text>
                         </Button>
                     </View>
