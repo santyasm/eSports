@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Image, Switch, ScrollView, SectionList, Touch
 
 import { styles } from './styles';
 import { Background } from '../../components/Background';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '../../components/Form/Input';
 import { Heading } from '../../components/Heading';
 import { Button } from '../../components/Form/Button';
@@ -10,9 +10,6 @@ import { GameCardProps } from '../../components/GameCard';
 import { THEME } from '../../theme';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GameController } from 'phosphor-react-native';
-
-import { ToggleButton } from 'react-native-paper';
-
 
 export function CreateAd() {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -89,63 +86,49 @@ export function CreateAd() {
                             Quando costuma jogar?
                         </Text>
                         <View style={styles.days}>
-                            <ToggleButton.Group
-                            onValueChange={toggleDay}
-                            value={""}
+
+                            <TouchableOpacity
+                                style={weekDays.includes('0') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('0')}
                             >
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>D</Text>}
-                                    key="day-0"
-                                    value="0"
-                                    style={weekDays.includes('0') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('0')}
-                                />
-
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>S</Text>}
-                                    key="day-1"
-                                    value="1"
-                                    style={weekDays.includes('1') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('1')}
-                                />
-
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>T</Text>}
-                                    key="day-2"
-                                    value="2"
-                                    style={weekDays.includes('2') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('2')}
-                                />
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>Q</Text>}
-                                    key="day-3"
-                                    value="3"
-                                    style={weekDays.includes('3') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('3')}
-                                />
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>Q</Text>}
-                                    key="day-4"
-                                    value="4"
-                                    style={weekDays.includes('4') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('4')}
-                                />
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>S</Text>}
-                                    key="day-5"
-                                    value="5"
-                                    style={weekDays.includes('5') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('5')}
-                                />
-                                <ToggleButton
-                                    icon={() => <Text style={styles.text}>S</Text>}
-                                    key="day-6"
-                                    value="6"
-                                    style={weekDays.includes('6') ? styles.selected : styles.checkbox}
-                                    onPress={() => toggleDay('6')}
-                                />
-
-                            </ToggleButton.Group>
+                                <Text style={styles.text}>D</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('1') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('1')}
+                            >
+                                <Text style={styles.text}>S</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('2') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('2')}
+                            >
+                                <Text style={styles.text}>T</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('3') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('3')}
+                            >
+                                <Text style={styles.text}>Q</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('4') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('4')}
+                            >
+                                <Text style={styles.text}>Q</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('5') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('5')}
+                            >
+                                <Text style={styles.text}>S</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={weekDays.includes('6') ? styles.selected : styles.checkbox}
+                                onPress={() => toggleDay('6')}
+                            >
+                                <Text style={styles.text}>S</Text>
+                            </TouchableOpacity>
                         </View>
 
                         <Input keyboardType='numeric' placeholder='Qual horário do dia?' maxLength={5} />
