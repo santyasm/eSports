@@ -6,17 +6,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Input } from '../../components/Form/Input';
 import { Heading } from '../../components/Heading';
 import { Button } from '../../components/Form/Button';
-import { Checkbox } from '../../components/Form/Checkbox';
 import { GameCardProps } from '../../components/GameCard';
 import { THEME } from '../../theme';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GameController } from 'phosphor-react-native';
 
+import { ToggleButton } from 'react-native-paper';
+
+
 export function CreateAd() {
     const [isEnabled, setIsEnabled] = useState(false);
     const [games, setGames] = useState<GameCardProps[]>([]);
     const [gameId, setGameId] = useState('');
-
+    const [weekDays, setWeekDays] = useState<string[]>([]);
 
     function toggleSwitch() {
         setIsEnabled(!isEnabled);
@@ -26,7 +28,6 @@ export function CreateAd() {
         games.map(game => ({
             key: game.id,
             value: game.title
-
         }))
 
 
@@ -35,6 +36,18 @@ export function CreateAd() {
             .then(response => response.json())
             .then(data => setGames(data));
     }, [])
+
+    const toggleDay = (day: string) => {
+        if (weekDays.includes(day)) {
+            // If the day is already selected, remove it from the array
+            setWeekDays(weekDays.filter((d) => d !== day));
+        } else {
+            // If the day is not selected, add it to the array
+            setWeekDays([...weekDays, day]);
+        }
+    };
+
+    console.log(weekDays)
 
     return (
         <Background>
@@ -47,20 +60,20 @@ export function CreateAd() {
                             subtitle='É rápido e fácil!'
                         />
 
-                        
-                            <SelectList
-                                boxStyles={styles.boxSelect}
-                                inputStyles={styles.label}
-                                dropdownStyles={{ borderColor: THEME.COLORS.BACKGROUND_800 }}
-                                dropdownTextStyles={styles.label}
 
-                                setSelected={(item: any) => setGameId(item)}
-                                
-                                data={data}
-                                placeholder='Selecione o game'
-                                save='key'
-                            />
-                       
+                        <SelectList
+                            boxStyles={styles.boxSelect}
+                            inputStyles={styles.label}
+                            dropdownStyles={{ borderColor: THEME.COLORS.BACKGROUND_800 }}
+                            dropdownTextStyles={styles.label}
+
+                            setSelected={(item: any) => setGameId(item)}
+
+                            data={data}
+                            placeholder='Selecione o game'
+                            save='key'
+                        />
+
                         <Text style={styles.text}>
                             Game: {gameId}
                         </Text>
@@ -76,41 +89,63 @@ export function CreateAd() {
                             Quando costuma jogar?
                         </Text>
                         <View style={styles.days}>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    D
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    S
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    T
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    Q
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    Q
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    S
-                                </Text>
-                            </Checkbox>
-                            <Checkbox>
-                                <Text style={styles.text}>
-                                    S
-                                </Text>
-                            </Checkbox>
+                            <ToggleButton.Group
+                            onValueChange={toggleDay}
+                            value={""}
+                            >
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>D</Text>}
+                                    key="day-0"
+                                    value="0"
+                                    style={weekDays.includes('0') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('0')}
+                                />
+
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>S</Text>}
+                                    key="day-1"
+                                    value="1"
+                                    style={weekDays.includes('1') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('1')}
+                                />
+
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>T</Text>}
+                                    key="day-2"
+                                    value="2"
+                                    style={weekDays.includes('2') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('2')}
+                                />
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>Q</Text>}
+                                    key="day-3"
+                                    value="3"
+                                    style={weekDays.includes('3') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('3')}
+                                />
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>Q</Text>}
+                                    key="day-4"
+                                    value="4"
+                                    style={weekDays.includes('4') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('4')}
+                                />
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>S</Text>}
+                                    key="day-5"
+                                    value="5"
+                                    style={weekDays.includes('5') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('5')}
+                                />
+                                <ToggleButton
+                                    icon={() => <Text style={styles.text}>S</Text>}
+                                    key="day-6"
+                                    value="6"
+                                    style={weekDays.includes('6') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('6')}
+                                />
+
+                            </ToggleButton.Group>
                         </View>
 
                         <Input keyboardType='numeric' placeholder='Qual horário do dia?' maxLength={5} />

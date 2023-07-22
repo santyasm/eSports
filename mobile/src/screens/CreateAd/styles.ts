@@ -44,4 +44,22 @@ export const styles = StyleSheet.create({
     borderColor: THEME.COLORS.BACKGROUND_800,
     backgroundColor: THEME.COLORS.BACKGROUND_800,
   },
+  checkbox: {
+    width: 30,
+    height: 30,
+    margin: 5,
+    borderRadius: 4,
+    backgroundColor: THEME.COLORS.BACKGROUND_800,
+    alignItems: 'center',
+    justifyContent: 'center'
+},
+selected:{
+    width: 30,
+    height: 30,
+    margin: 5,
+    borderRadius: 4,
+    backgroundColor: THEME.COLORS.PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center'
+},
 });
