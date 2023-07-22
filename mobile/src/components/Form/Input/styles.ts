@@ -3,7 +3,7 @@ import { THEME } from '../../../theme';
 
 export const styles = StyleSheet.create({
   input: {
-    width: '100%',
+    width: '90%',
     height: 40,
     backgroundColor: THEME.COLORS.BACKGROUND_800,
     color: THEME.COLORS.TEXT,
