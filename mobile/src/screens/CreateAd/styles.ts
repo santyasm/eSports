@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   text: {
-    color: THEME.COLORS.TEXT,
+    color: THEME.COLORS.CAPTION_300,
     fontFamily: THEME.FONT_FAMILY.REGULAR,
     fontSize: THEME.FONT_SIZE.MD,
   },
@@ -50,16 +50,33 @@ export const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 4,
     backgroundColor: THEME.COLORS.BACKGROUND_800,
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-selected:{
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selected: {
     width: 30,
     height: 30,
     margin: 5,
     borderRadius: 4,
     backgroundColor: THEME.COLORS.PRIMARY,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  hours: {
+    flex: 1, 
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
-},
+    justifyContent: 'center',
+    gap: 6
+  },
+  inputHour: {
+    width: '25%',
+    height: 40,
+    backgroundColor: THEME.COLORS.BACKGROUND_800,
+    color: THEME.COLORS.TEXT,
+    borderRadius: 4,
+    padding: 10,
+  },
 });

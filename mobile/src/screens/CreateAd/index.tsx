@@ -1,4 +1,5 @@
-import { View, Text, SafeAreaView, Image, Switch, ScrollView, SectionList, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, Image, Switch, ScrollView, SectionList, TouchableOpacity, Pressable, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import axios from 'axios';
 
 import { styles } from './styles';
 import { Background } from '../../components/Background';
@@ -12,13 +13,39 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { GameController } from 'phosphor-react-native';
 
 export function CreateAd() {
-    const [isEnabled, setIsEnabled] = useState(false);
     const [games, setGames] = useState<GameCardProps[]>([]);
+
     const [gameId, setGameId] = useState('');
+    const [name, setName] = useState('');
+    const [discord, setDiscord] = useState('');
+    const [yearsPlaying, setYearsPlaying] = useState('');
     const [weekDays, setWeekDays] = useState<string[]>([]);
+    const [hourStart, setHourStart] = useState('');
+    const [hourEnd, setHourEnd] = useState('');
+    const [useVoiceChannel, setUseVoiceChannel] = useState(false);
+
+    function handleChangeText(inputText: string) {
+        const numericValue = inputText.replace(/\D/g, '');
+
+        const formattedTime = numericValue
+            .replace(/^(\d{2})/, '$1:')
+            .replace(/^(.{5})(.*)/, '$1');
+
+        return formattedTime;
+    }
+
+    function handleChangeHourStart(inputText: string) {
+        const hourStartFormatted = handleChangeText(inputText);
+        setHourStart(hourStartFormatted)
+    }
+
+    function handleChangeHourEnd(inputText: string) {
+        const hourEndFormatted = handleChangeText(inputText);
+        setHourEnd(hourEndFormatted)
+    }
 
     function toggleSwitch() {
-        setIsEnabled(!isEnabled);
+        setUseVoiceChannel(!useVoiceChannel);
     }
 
     const data =
@@ -27,12 +54,30 @@ export function CreateAd() {
             value: game.title
         }))
 
-
     useEffect(() => {
-        fetch('http://192.168.0.101:4000/games')
+        fetch('http://192.168.0.103:4000/games')
             .then(response => response.json())
             .then(data => setGames(data));
     }, [])
+
+    async function handleCreateAd() {
+
+        try {
+            const newAd = await axios.post(`http://192.168.0.103:4000/games/${gameId}/ads`, {
+                "name": name,
+                "discord": discord,
+                "yearsPlaying": Number(yearsPlaying),
+                "weekDays": weekDays.map(Number),
+                "hourStart": hourStart,
+                "hourEnd": hourEnd,
+                "useVoiceChannel": useVoiceChannel
+            })
+
+            alert("Anúncio criado com sucesso!")
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const toggleDay = (day: string) => {
         if (weekDays.includes(day)) {
@@ -44,112 +89,148 @@ export function CreateAd() {
         }
     };
 
-    console.log(weekDays)
-
     return (
         <Background>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.container}
+            >
+                <ScrollView>
+                    <SafeAreaView style={styles.container}>
+                        <View style={styles.form}>
+                            <Heading
+                                title='Publique um anúncio'
+                                subtitle='É rápido e fácil!'
+                            />
 
-            <ScrollView>
-                <SafeAreaView style={styles.container}>
-                    <View style={styles.form}>
-                        <Heading
-                            title='Publique um anúncio'
-                            subtitle='É rápido e fácil!'
-                        />
+                            <View style={styles.hours}>
+                                <SelectList
+                                    boxStyles={styles.boxSelect}
+                                    inputStyles={styles.label}
+                                    dropdownStyles={{ borderColor: THEME.COLORS.BACKGROUND_800 }}
+                                    dropdownTextStyles={styles.label}
+
+                                    setSelected={(item: any) => setGameId(item)}
+
+                                    data={data}
+                                    placeholder='Selecione o game'
+                                    save='key'
+                                />
+
+                                <TextInput
+                                    style={styles.inputHour}
+                                    placeholder='Joga há quantos anos?'
+                                    keyboardType='numeric' placeholderTextColor={THEME.COLORS.CAPTION_300}
+                                    value={yearsPlaying}
+                                    onChangeText={setYearsPlaying}
+                                />
+
+                            </View>
+
+                            <Input
+                                value={name}
+                                onChangeText={setName}
+                                placeholder='Seu nome (ou nickname)'
+                            />
+
+                            <Input placeholder='Qual seu discord?'
+                                onChangeText={setDiscord}
+                                value={discord}
+                            />
 
 
-                        <SelectList
-                            boxStyles={styles.boxSelect}
-                            inputStyles={styles.label}
-                            dropdownStyles={{ borderColor: THEME.COLORS.BACKGROUND_800 }}
-                            dropdownTextStyles={styles.label}
+                            <Text style={styles.text}>
+                                Quando costuma jogar?
+                            </Text>
 
-                            setSelected={(item: any) => setGameId(item)}
+                            <View style={styles.days}>
+                                <TouchableOpacity
+                                    style={weekDays.includes('0') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('0')}
+                                >
+                                    <Text style={styles.text}>D</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('1') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('1')}
+                                >
+                                    <Text style={styles.text}>S</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('2') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('2')}
+                                >
+                                    <Text style={styles.text}>T</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('3') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('3')}
+                                >
+                                    <Text style={styles.text}>Q</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('4') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('4')}
+                                >
+                                    <Text style={styles.text}>Q</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('5') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('5')}
+                                >
+                                    <Text style={styles.text}>S</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={weekDays.includes('6') ? styles.selected : styles.checkbox}
+                                    onPress={() => toggleDay('6')}
+                                >
+                                    <Text style={styles.text}>S</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                            data={data}
-                            placeholder='Selecione o game'
-                            save='key'
-                        />
 
-                        <Text style={styles.text}>
-                            Game: {gameId}
-                        </Text>
+                            <Text style={styles.text}>Qual horário do dia?</Text>
+                            <View style={styles.hours}>
+                                <TextInput
+                                    style={styles.inputHour}
+                                    keyboardType='numeric'
+                                    maxLength={5}
+                                    onChangeText={handleChangeHourStart}
+                                    value={hourStart}
+                                    placeholder='HH:MM'
+                                    placeholderTextColor={THEME.COLORS.CAPTION_300}
+                                />
+                                <Text style={styles.text}>Até</Text>
+                                <TextInput
+                                    style={styles.inputHour}
+                                    keyboardType='numeric'
+                                    maxLength={5}
+                                    onChangeText={handleChangeHourEnd}
+                                    value={hourEnd}
+                                    placeholderTextColor={THEME.COLORS.CAPTION_300}
+                                    placeholder='HH:MM'
+                                />
+                            </View>
 
+                            <Text style={styles.text}>
+                                Costumo me conectar ao chat de voz
+                            </Text>
 
-                        <Input placeholder='Seu nome (ou nickname)' />
+                            <Switch
+                                trackColor={{ false: '#76757', true: THEME.COLORS.SUCCESS }}
+                                onValueChange={toggleSwitch}
+                                value={useVoiceChannel}
+                            />
 
-                        <Input placeholder='Joga há quantos anos?' keyboardType='numeric' />
-                        <Input placeholder='Qual seu discord?' />
+                            <Button onPress={handleCreateAd}>
+                                <GameController size={24} color={THEME.COLORS.TEXT} />
+                                <Text style={styles.text}>Encontrar duo</Text>
+                            </Button>
 
-
-                        <Text style={styles.text}>
-                            Quando costuma jogar?
-                        </Text>
-                        <View style={styles.days}>
-
-                            <TouchableOpacity
-                                style={weekDays.includes('0') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('0')}
-                            >
-                                <Text style={styles.text}>D</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('1') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('1')}
-                            >
-                                <Text style={styles.text}>S</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('2') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('2')}
-                            >
-                                <Text style={styles.text}>T</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('3') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('3')}
-                            >
-                                <Text style={styles.text}>Q</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('4') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('4')}
-                            >
-                                <Text style={styles.text}>Q</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('5') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('5')}
-                            >
-                                <Text style={styles.text}>S</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={weekDays.includes('6') ? styles.selected : styles.checkbox}
-                                onPress={() => toggleDay('6')}
-                            >
-                                <Text style={styles.text}>S</Text>
-                            </TouchableOpacity>
                         </View>
-
-                        <Input keyboardType='numeric' placeholder='Qual horário do dia?' maxLength={5} />
-
-                        <Text style={styles.text}>
-                            Costumo me conectar ao chat de voz
-                        </Text>
-
-                        <Switch
-                            trackColor={{ false: '#76757', true: THEME.COLORS.SUCCESS }}
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                        />
-
-                        <Button >
-                            <GameController size={24} color={THEME.COLORS.TEXT} />
-                            <Text style={styles.text}>Encontrar duo</Text>
-                        </Button>
-                    </View>
-                </SafeAreaView>
-            </ScrollView>
+                    </SafeAreaView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Background>
     );
 }
