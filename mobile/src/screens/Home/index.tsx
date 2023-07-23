@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Background } from '../../components/Background';
 import { MagnifyingGlassPlus } from 'phosphor-react-native';
 import { THEME } from '../../theme';
+import axios from 'axios';
 
 export function Home() {
   const [games, setGames] = useState<GameCardProps[]>([]);
@@ -25,9 +26,8 @@ export function Home() {
   }
 
   useEffect(() => {
-    fetch('http://192.168.0.103:4000/games')
-      .then(response => response.json())
-      .then(data => setGames(data))
+    axios('http://192.168.0.103:4000/games')
+      .then(response => setGames(response.data))
   }, []);
 
   return (

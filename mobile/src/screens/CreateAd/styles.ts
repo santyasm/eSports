@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   text: {
-    color: THEME.COLORS.CAPTION_300,
+    color: THEME.COLORS.TEXT,
     fontFamily: THEME.FONT_FAMILY.REGULAR,
     fontSize: THEME.FONT_SIZE.MD,
   },
@@ -63,20 +63,32 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   hours: {
-    flex: 1, 
-    width: '90%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6
+    flex: 1,
+    width: "90%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
   },
   inputHour: {
-    width: '25%',
+    width: "23%",
     height: 40,
     backgroundColor: THEME.COLORS.BACKGROUND_800,
     color: THEME.COLORS.TEXT,
     borderRadius: 4,
     padding: 10,
   },
+  inputYearsPlaying:{
+    width: '50%',
+    height: 40,
+    backgroundColor: THEME.COLORS.BACKGROUND_800,
+    color: THEME.COLORS.TEXT,
+    borderRadius: 4,
+    padding: 10,
+
+  },
+  arrowBack:{
+    alignSelf: 'flex-start'
+  }
 });

@@ -1,9 +1,11 @@
-import { View, Text, SafeAreaView, Image, Switch, ScrollView, SectionList, TouchableOpacity, Pressable, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, Image, Switch, ScrollView, SectionList, TouchableOpacity, Pressable, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 import { styles } from './styles';
+import { Entypo } from "@expo/vector-icons";
 import { Background } from '../../components/Background';
-import React, { useEffect, useState } from 'react';
 import { Input } from '../../components/Form/Input';
 import { Heading } from '../../components/Heading';
 import { Button } from '../../components/Form/Button';
@@ -13,6 +15,8 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { GameController } from 'phosphor-react-native';
 
 export function CreateAd() {
+    const navigation = useNavigation();
+    const [isCreating, setIsCreating] = useState(false);
     const [games, setGames] = useState<GameCardProps[]>([]);
 
     const [gameId, setGameId] = useState('');
@@ -23,6 +27,11 @@ export function CreateAd() {
     const [hourStart, setHourStart] = useState('');
     const [hourEnd, setHourEnd] = useState('');
     const [useVoiceChannel, setUseVoiceChannel] = useState(false);
+
+
+    function handleGoBack() {
+        navigation.goBack();
+    }
 
     function handleChangeText(inputText: string) {
         const numericValue = inputText.replace(/\D/g, '');
@@ -55,15 +64,15 @@ export function CreateAd() {
         }))
 
     useEffect(() => {
-        fetch('http://192.168.0.103:4000/games')
-            .then(response => response.json())
-            .then(data => setGames(data));
+        axios('http://192.168.0.103:4000/games')
+            .then(response => setGames(response.data));
     }, [])
 
     async function handleCreateAd() {
 
         try {
-            const newAd = await axios.post(`http://192.168.0.103:4000/games/${gameId}/ads`, {
+            setIsCreating(true)
+            await axios.post(`http://192.168.0.103:4000/games/${gameId}/ads`, {
                 "name": name,
                 "discord": discord,
                 "yearsPlaying": Number(yearsPlaying),
@@ -73,7 +82,9 @@ export function CreateAd() {
                 "useVoiceChannel": useVoiceChannel
             })
 
+            setIsCreating(false)
             alert("Anúncio criado com sucesso!")
+            handleGoBack();
         } catch (error) {
             console.log(error)
         }
@@ -97,10 +108,29 @@ export function CreateAd() {
             >
                 <ScrollView>
                     <SafeAreaView style={styles.container}>
+
+                        <TouchableOpacity onPress={handleGoBack}>
+                            <Entypo
+                                name='chevron-thin-left'
+                                color={THEME.COLORS.CAPTION_300}
+                                size={20}
+                            />
+                        </TouchableOpacity>
                         <View style={styles.form}>
+
+                            <TouchableOpacity onPress={handleGoBack}
+                            style={arrowBack}
+                            >
+                                <Entypo
+                                    name='chevron-thin-left'
+                                    color={THEME.COLORS.CAPTION_300}
+                                    size={20}
+                                />
+                            </TouchableOpacity>
+
                             <Heading
                                 title='Publique um anúncio'
-                                subtitle='É rápido e fácil!'
+                                subtitle=''
                             />
 
                             <View style={styles.hours}>
@@ -118,8 +148,8 @@ export function CreateAd() {
                                 />
 
                                 <TextInput
-                                    style={styles.inputHour}
-                                    placeholder='Joga há quantos anos?'
+                                    style={styles.inputYearsPlaying}
+                                    placeholder='Anos jogando'
                                     keyboardType='numeric' placeholderTextColor={THEME.COLORS.CAPTION_300}
                                     value={yearsPlaying}
                                     onChangeText={setYearsPlaying}
@@ -191,16 +221,17 @@ export function CreateAd() {
 
                             <Text style={styles.text}>Qual horário do dia?</Text>
                             <View style={styles.hours}>
+                                <Text style={styles.text}>De</Text>
                                 <TextInput
                                     style={styles.inputHour}
                                     keyboardType='numeric'
                                     maxLength={5}
                                     onChangeText={handleChangeHourStart}
                                     value={hourStart}
-                                    placeholder='HH:MM'
+                                    placeholder='hh:mm'
                                     placeholderTextColor={THEME.COLORS.CAPTION_300}
                                 />
-                                <Text style={styles.text}>Até</Text>
+                                <Text style={styles.text}>até</Text>
                                 <TextInput
                                     style={styles.inputHour}
                                     keyboardType='numeric'
@@ -208,7 +239,7 @@ export function CreateAd() {
                                     onChangeText={handleChangeHourEnd}
                                     value={hourEnd}
                                     placeholderTextColor={THEME.COLORS.CAPTION_300}
-                                    placeholder='HH:MM'
+                                    placeholder='hh:mm'
                                 />
                             </View>
 
@@ -223,8 +254,15 @@ export function CreateAd() {
                             />
 
                             <Button onPress={handleCreateAd}>
-                                <GameController size={24} color={THEME.COLORS.TEXT} />
-                                <Text style={styles.text}>Encontrar duo</Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                                    {isCreating ? (
+                                        <ActivityIndicator color={THEME.COLORS.TEXT} />
+                                    ) : (
+                                        <GameController size={24} color={THEME.COLORS.TEXT} />
+                                    )}
+                                    <Text style={styles.text}>Encontrar duo</Text>
+                                </View>
+
                             </Button>
 
                         </View>
