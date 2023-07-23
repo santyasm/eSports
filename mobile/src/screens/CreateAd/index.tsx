@@ -108,18 +108,10 @@ export function CreateAd() {
             >
                 <ScrollView>
                     <SafeAreaView style={styles.container}>
-
-                        <TouchableOpacity onPress={handleGoBack}>
-                            <Entypo
-                                name='chevron-thin-left'
-                                color={THEME.COLORS.CAPTION_300}
-                                size={20}
-                            />
-                        </TouchableOpacity>
                         <View style={styles.form}>
 
                             <TouchableOpacity onPress={handleGoBack}
-                            style={arrowBack}
+                            style={styles.arrowBack}
                             >
                                 <Entypo
                                     name='chevron-thin-left'

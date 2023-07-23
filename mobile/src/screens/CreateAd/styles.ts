@@ -89,6 +89,7 @@ export const styles = StyleSheet.create({
 
   },
   arrowBack:{
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    marginTop: 20
   }
 });
