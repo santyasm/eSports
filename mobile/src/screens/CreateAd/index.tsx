@@ -13,6 +13,7 @@ import { GameCardProps } from '../../components/GameCard';
 import { THEME } from '../../theme';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { GameController } from 'phosphor-react-native';
+import { ServerUrl } from '../../services/server';
 
 export function CreateAd() {
     const navigation = useNavigation();
@@ -64,7 +65,7 @@ export function CreateAd() {
         }))
 
     useEffect(() => {
-        axios('http://192.168.0.103:4000/games')
+        axios(`${ServerUrl}/games`)
             .then(response => setGames(response.data));
     }, [])
 
@@ -72,7 +73,7 @@ export function CreateAd() {
 
         try {
             setIsCreating(true)
-            await axios.post(`http://192.168.0.103:4000/games/${gameId}/ads`, {
+            await axios.post(`${ServerUrl}/games/${gameId}/ads`, {
                 "name": name,
                 "discord": discord,
                 "yearsPlaying": Number(yearsPlaying),

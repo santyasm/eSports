@@ -14,6 +14,7 @@ import { GameParams } from '../../@types/navigation';
 import { Heading } from '../../components/Heading';
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
 import { DuoMatch } from '../../components/DuoMatch';
+import { ServerUrl } from '../../services/server';
 
 export function Game() {
   const navigation = useNavigation();
@@ -27,13 +28,13 @@ export function Game() {
   };
 
   async function getDiscordUser(adsId: string) {
-    fetch(`http://192.168.0.103:4000/ads/${adsId}/discord`)
+    fetch(`${ServerUrl}/ads/${adsId}/discord`)
       .then(response => response.json())
       .then(data => setDiscordDuoSelected(data.discord))
   }
 
   useEffect(() => {
-    fetch(`http://192.168.0.103:4000/games/${game.id}/ads`)
+    fetch(`${ServerUrl}/games/${game.id}/ads`)
       .then(response => response.json())
       .then(data => setDuos(data))
   }, [])

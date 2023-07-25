@@ -12,6 +12,7 @@ import { Background } from '../../components/Background';
 import { MagnifyingGlassPlus } from 'phosphor-react-native';
 import { THEME } from '../../theme';
 import axios from 'axios';
+import { ServerUrl } from '../../services/server';
 
 export function Home() {
   const [games, setGames] = useState<GameCardProps[]>([]);
@@ -26,7 +27,7 @@ export function Home() {
   }
 
   useEffect(() => {
-    axios('http://192.168.0.103:4000/games')
+    axios(`${ServerUrl}/games`)
       .then(response => setGames(response.data))
   }, []);
 
